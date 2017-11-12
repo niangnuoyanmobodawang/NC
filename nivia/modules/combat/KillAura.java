@@ -79,15 +79,18 @@ public class KillAura extends Module {
     public  Property<Boolean> rreach = new Property<Boolean>(this, "RandomReach", true);
     public DoubleProperty ticks = new DoubleProperty(this, "Exist Ticks", 50, 48, 200);
     public DoubleProperty reach = new DoubleProperty(this, "Reach", 4.1, 1, 10, 1);
-    public DoubleProperty hitmiss = new DoubleProperty(this, "HitMiss", 1, 0, 10, 1);
+    public DoubleProperty hurttime = new DoubleProperty(this, "HurtTime", 8, 0, 11, 1);
     public DoubleProperty FOV = new DoubleProperty(this, "FOV", 360, 15, 360);
     public DoubleProperty SCPS = new DoubleProperty(this, "ShutdownHitCpsIncr", 1.1, 0.6, 5 ,0.1);
     public DoubleProperty Sburst = new DoubleProperty(this, "ShutdownHitHealth", 3, 1, 20);
     public DoubleProperty Bcool = new DoubleProperty(this, "BurstCoolDown", 21860, 4969, 99999);
     public DoubleProperty Btime = new DoubleProperty(this, "BurstInOneMinute", 1, 1, 5);
     public DoubleProperty Prange = new DoubleProperty(this, "PreBlockRange", 5.2, 1, 10);
+    public DoubleProperty Cdel = new DoubleProperty(this, "CriticalsDelay", 400, 200, 1000);
+    public DoubleProperty CDR = new DoubleProperty(this, "CriticalsHitCoolDown", 11, 2 , 20);
     public Property<Boolean> Slowtime = new Property<Boolean>(this, "TimerSlowDown", true);
     public Property<Boolean> Heal = new Property<Boolean>(this, "FastHeal", true);
+    public Property<Boolean> Kwaa = new Property<Boolean>(this, "KeepWatch", false);
     public DoubleProperty Bbursts = new DoubleProperty(this, "ShutdownHitBurstInc", 300, 300, 22500);
     
     public DoubleProperty APS = new DoubleProperty(this, "APS", 9
@@ -121,11 +124,11 @@ public class KillAura extends Module {
         mode.value.onPreMotion(e);
         if(mc.thePlayer.isDead && death.value && this.getState()){
             this.setState(false);
-            Logger.logChat("Killaura À¿Õˆ◊‘∂Øπÿ±’!");
+            Logger.logChat("Killaura Ê≠ª‰∫°Ëá™Âä®ÂÖ≥Èó≠!");
         }else{
             if (Helper.mc().getCurrentServerData().serverIP.toLowerCase().contains("hypixel") && mc.thePlayer.inventory.hasItem(bed) && mc.thePlayer.inventory.hasItem(comparator) && mc.thePlayer.inventory.hasItem(compass) && mc.thePlayer.inventory.hasItem(paper)) {
                 this.setState(false);
-                Logger.logChat("Killaura À¿Õˆ◊‘∂Øπÿ±’!");
+                Logger.logChat("Killaura Ê≠ª‰∫°Ëá™Âä®ÂÖ≥Èó≠!");
             }
         }
     }
@@ -209,6 +212,10 @@ public class KillAura extends Module {
         super.onEnable();
         mode.value.onEnabled();
         updateProperties();
+        if(hurttime.getValue()<6){
+        	Logger.logChat("HurtTime<6ÂèØËÉΩÁ©∫ÂàÄ");
+        }else if(hurttime.getValue()>=9)
+        	Logger.logChat("HurtTimeÂ§™Â§ßÂèØËÉΩÊó†Êïà");
         
       if(FST.value&&!Helper.player().isPotionActive(Potion.damageBoost)){
     	  mc.thePlayer.addPotionEffect(new PotionEffect(Potion.damageBoost.getId(), 50200, 2));
