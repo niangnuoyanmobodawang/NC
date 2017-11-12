@@ -148,10 +148,7 @@ public class Switch extends AuraMode {
         if(attack) {
         if(ka.Slowtime.value)	mc.timer.timerSpeed = 0.90001F;
             boolean useRandom = ka.rnd.getValue() > 0;
-            int cd = Criticals.getCrits().cMode.value.equals(CritMode.PACKET) ? 250 : 0;
-        	  int min = (int) 1;
-          	  int max = (int) 10;
-          	 int floatBounded = (int) (min + new Random().nextFloat() * (max - min));
+            int cd = (int) (Criticals.getCrits().cMode.value.equals(CritMode.PACKET) ? ka.Cdel.getValue() : 0);
           	double attackDelay;
        //   	 if(ka.hitmiss.getValue()>=floatBounded)
        //   		attackDelay = 66.314;
@@ -160,10 +157,9 @@ public class Switch extends AuraMode {
           	    attackDelay = attackDelay - (getTarget().getHealth()<ka.Sburst.getValue() ? (ka.SHIT.value ? Helper.mathUtils().getRandom((int)ka.SCPS.getValue()) : 0) : 0);
           	 //      if(attackDelay<ka.MCL.getValue())
       //      	attackDelay=attackDelay+Helper.mathUtils().getRandom((int) ka.rnd.getValue());
-          	 while(attackDelay > ka.LAPS.getValue())
+          	 if(attackDelay > ka.LAPS.getValue())
           		attackDelay = attackDelay - Helper.mathUtils().getRandom((int) ka.rnd.getValue());
-          	 boolean isMiss = (int) (1 + new Random().nextFloat() * (10 - 1))<=ka.hitmiss.getValue();
-            if (ticks >= (20 / attackDelay) && !isMiss) {
+          	 if (ticks >= (20 / attackDelay) && (getTarget().getHealth()<getTarget().getMaxHealth() ? getTarget().hurtTime<ka.hurttime.getValue() : true)) {
                 delay++;
                 if (critTimer.hasTimeElapsed((long) cd, true)) {
           	        if (Criticals.getCrits().cMode.value.equals(Criticals.CritMode.PACKET)){
@@ -172,7 +168,7 @@ public class Switch extends AuraMode {
           	        }
                     else ka.nextTick = true;
                 }
-                if (potTimer.hasTimeElapsed(10, false))
+                if (potTimer.hasTimeElapsed((long) ka.CDR.getValue(), false))
                     doAttack(getTarget());
                 ticks = 0;
                 changeTargets();
@@ -180,7 +176,7 @@ public class Switch extends AuraMode {
         }
         if (ka.canBlock() && (ka.hasPlayerNear() || !ka.attackList.isEmpty())){
             mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem());
-       //     Helper.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+            //     Helper.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
         }      
     }
     
@@ -269,8 +265,8 @@ public class Switch extends AuraMode {
     
     
     public void doAttack(Entity target) {
-    	 Helper.player().swingItem();
-    	// doRote();
+    	//Helper.player().swingItem();
+    	if(ka.Kwaa.value) doRote();
     	if(ka.Slowtime.value)mc.timer.timerSpeed = 0.910001F;
         if(mc.thePlayer.isBlocking() && !NoSlow.noslowing && ka.unblockq.value)
             Helper.sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
@@ -282,17 +278,6 @@ public class Switch extends AuraMode {
       //   	mc.thePlayer.setSneaking(false);
             burstTimer.reset();
          }
-        try {
-            if (mc.thePlayer.getCurrentEquippedItem().isItemEnchanted()) {
-                mc.thePlayer.onEnchantmentCritical(target);
-                mc.thePlayer.onEnchantmentCritical((Entity)target);
-                mc.thePlayer.onEnchantmentCritical((Entity)target);
-                mc.thePlayer.onEnchantmentCritical((Entity)target);
-                mc.thePlayer.onEnchantmentCritical((Entity)target);
-                mc.thePlayer.onEnchantmentCritical((Entity)target);
-            }
-        }
-        catch (Exception ex) {}
 		if(ka.LNCPRayCast.value)
 		{
 	        MovingObjectPosition ray = null;
@@ -316,6 +301,7 @@ public class Switch extends AuraMode {
         
         if (mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.getCurrentEquippedItem().isItemEnchanted()) {
             mc.thePlayer.onEnchantmentCritical(target);
+         if(new Random().nextBoolean()) mc.thePlayer.onEnchantmentCritical(target);
          }
     }
     
