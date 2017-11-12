@@ -27,7 +27,7 @@ import nivia.utils.utils.Timer;
 public class Criticals extends Module {
 	public Property<CritMode> cMode = new Property<CritMode>(this, "Mode", CritMode.PACKET);
 //	public  Property<Boolean> Nhy = new Property<Boolean>(this, "HypixelNew", true);
-	private DoubleProperty delay = new DoubleProperty(this, "HurtTime", 15, 0, 22, 1);
+	private DoubleProperty delay = new DoubleProperty(this, "HurtTime", 8, 0, 10, 1);
 	private static boolean next = false, modify;
 	private static boolean critical = false;
 	private Timer timer = new Timer();
